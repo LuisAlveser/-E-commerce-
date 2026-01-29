@@ -1,12 +1,12 @@
 const ProductController=require("../controller/ProductController");
 const express =require("express");
 const router= express.Router();
-
-router.post("/",ProductController.adicionar);
+const check_auth= require("../middeware/check-auth");
+router.post("/",check_auth.check_auth,ProductController.adicionar);
 router.get("/",ProductController.mostrarProdutos);
 router.get("/:id",ProductController.mostrarProdutosporId);
-router.patch("/:id",ProductController.atualizar);
-router.patch("/adicionarStok/:id",ProductController.adicionarStok);
-router.patch("/diminuirStok/:id",ProductController.diminuirStok);
-router.delete("/:id",ProductController.deletar);
+router.patch("/:id",check_auth.check_auth,ProductController.atualizar);
+router.patch("/adicionarStok/:id",check_auth.check_auth,ProductController.adicionarStok);
+router.patch("/diminuirStok/:id",check_auth.check_auth,ProductController.diminuirStok);
+router.delete("/:id",check_auth.check_auth,ProductController.deletar);
 module.exports=router;

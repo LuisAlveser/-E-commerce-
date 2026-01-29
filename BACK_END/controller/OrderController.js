@@ -15,7 +15,7 @@ async function  adicionar (req,res) {
     try {
         
     } catch (error) {
-          return res.status(200).json({messege:" Erro em criar pedido "});  
+          return res.status(500).json({messege:" Erro em criar pedido "});  
     }
     
 }
