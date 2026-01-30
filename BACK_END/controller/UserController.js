@@ -22,7 +22,7 @@ async function cadastro(req,res) {
      };   
      const novouser=await User.create(user);
      if(novouser){
-        const token =jwttoken.sign({id:novouser.id,email:novouser.email},"olá", { expiresIn: '24h' });
+        const token =jwttoken.sign({id:novouser.id,email:novouser.email,name:user.name},"olá", { expiresIn: '24h' });
         res.status(201).json({message:"Usuário criado com sucesso",token:token});
      }
     }
@@ -47,7 +47,7 @@ async function login(req,res) {
         if(!user||!userpassword){
              return res.status(400).json({ error: "Email e senha inválidos." });
         }
-        const token=jwttoken.sign({id:user.id,email:user.email,role:user.role},"olá", { expiresIn: '24h' });
+        const token=jwttoken.sign({id:user.id,email:user.email,role:user.role,name:user.name},"olá", { expiresIn: '24h' });
         return res.status(200).json({message:"Login feito com sucesso",token:token});
    } catch (error) {
       res.status(500).json({message:"Erro ao fazer o login "});

@@ -1,0 +1,23 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: oklch(12.9% 0.042 264.695);
+
+  
+}
+
+
+
+body {
+ justify-items: center;
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+ padding-top: 50px;
+
+}
+

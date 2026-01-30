@@ -1,0 +1,38 @@
+.cabecalho{
+  position: fixed;
+   display: flex;  
+  flex-direction: row;
+  justify-content: end;
+   width: 100vw;
+    height: 150px;
+   z-index: 1000; 
+    top: 0;
+    left: 0;
+    background-color: oklch(62.3% 0.214 259.815); 
+       border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    align-items:center;
+    gap: 20px;
+    
+ 
+}
+.botaotela{
+    width: 100px;
+    height: 50px;
+     border-radius: 5px;
+    background-color: oklch(12.9% 0.042 264.695);
+ border-color: transparent;
+ padding-right: 5px;
+}
+.icontela{
+    width: 50px;
+    height: 50px;
+    
+}
+.tag{
+    width: 50px;
+    height: 25px;
+    background-color: chocolate;
+    border-radius: 20px;
+    
+}

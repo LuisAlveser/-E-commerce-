@@ -4,7 +4,7 @@ const router=express.Router();
  
 
 router.post("/cadastro",usercontroller.cadastro);
-router.get("/login",usercontroller.login);
+router.post("/login",usercontroller.login);
 router.patch("/:id",usercontroller.atualizar);
 router.delete("/:id",usercontroller.deletar);
 module.exports=router;
