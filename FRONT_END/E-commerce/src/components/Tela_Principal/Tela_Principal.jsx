@@ -1,10 +1,12 @@
 import './Tela_Principal.css'
 import { useEffect, useState } from 'react';
 import { FaUserCircle ,FaSpinner} from "react-icons/fa";
+import  axios from 'axios';
 function Tela_Principal(){
     const[user,setUsuario]=useState(null);
     useEffect(() => {
   try {
+   
     const token = localStorage.getItem("token");
     const base64Url = token.split('.')[1]; 
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -23,15 +25,78 @@ function Tela_Principal(){
    
   }
 }, []);
-    return(
+ const [categorias,setCategorias]=useState([]);
+ useEffect(()=>{
+    const mostrarCategorias=async ()=>{
+     try {
         
+          const  resposta= await axios.get("http://localhost:3001/category");
+          if(resposta.status===200){
+            setCategorias(resposta.data);
+          }
+          else{
+            alert("Erro em buscar categorias");
+          }
+        
+     } catch (error) {
+          console.warn("Erro em buscar categorias");
+     }
+    }
+    mostrarCategorias();
+ },[]);
+ const listarProdutosporCat=(id)=>{
+    console.log(id);
+ }
+ const [mostrarTodosProdutos,setMostrarProdutos]=useState([]);
+ useEffect(()=>{
+    const mostrarProdutos=async ()=>{
+        try {
+            const produtos =await axios.get("http://localhost:3001/product");
+            if(produtos.status===200){
+                setMostrarProdutos(produtos.data);
+            }else{
+                alert("Erro em buscar produtos");
+            }
+        } catch (error) {
+             console.warn("Erro em buscar produtos");
+        }
+    }
+    mostrarProdutos();
+ },[]);
+    return(
+       <>
         <div className='cabecalho'> 
           <FaUserCircle className='icontela' />
         <h1>{user?.name || "Usuário"}</h1>
-          <div className='tag'>{user.role}</div>
+             {user?.role && <div className='tag'>{user.role}</div>}
           <button className="botaotela"> Sair </button>
            <button className="botaotela"> Adicionar Produtos </button>
+        <div className='divisor'>{   <ul>
+      {categorias.map((categoria) => (
+        <li onClick={()=>listarProdutosporCat(categoria.id)}   style={{ cursor: 'pointer' }}  key={categoria.id}>{categoria.name}</li>
+      ))}
+    </ul>}</div>
         </div>
+   
+<div className='conteudo-abaixo' style={{ marginTop: '170px', padding: '20px' }}>
+  <ul className="lista-produtos"> 
+    {mostrarTodosProdutos.map((produto) => (
+      <li 
+        className='conteudo_produtos' 
+        onClick={() => listarProdutosporCat(produto.id)} 
+        style={{ cursor: 'pointer' }} 
+        key={produto.id}
+      >
+        <span>{produto.name}</span>
+        <span>{"R$: " + produto.price}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+    </>
+
+        
+           
         
     );
 }
