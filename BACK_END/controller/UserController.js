@@ -8,7 +8,7 @@ async function cadastro(req,res) {
     try{
         const {name,password,email,role}= req.body;
         if(!password||!name||!email||!role){
-            res.status(400).json({message:"Preecha todos os campos"});
+          return   res.status(400).json({message:"Preecha todos os campos"});
         }
     
     const saltrounds=10;
@@ -22,8 +22,8 @@ async function cadastro(req,res) {
      };   
      const novouser=await User.create(user);
      if(novouser){
-        const token =jwttoken.sign({id:novouser.id,email:novouser.email,name:user.name},"olá", { expiresIn: '24h' });
-        res.status(201).json({message:"Usuário criado com sucesso",token:token});
+        const token =jwttoken.sign({id:novouser.id,email:novouser.email,name:user.name,role:novouser.role},"olá", { expiresIn: '24h' });
+      return   res.status(201).json({message:"Usuário criado com sucesso",token:token});
      }
     }
 
@@ -48,7 +48,7 @@ async function login(req,res) {
              return res.status(400).json({ error: "Email e senha inválidos." });
         }
         const token=jwttoken.sign({id:user.id,email:user.email,role:user.role,name:user.name},"olá", { expiresIn: '24h' });
-        return res.status(200).json({message:"Login feito com sucesso",token:token});
+        return res.status(200).json({user:{id:user.id,role:user.role},message:"Login feito com sucesso",token:token});
    } catch (error) {
       res.status(500).json({message:"Erro ao fazer o login "});
    } 

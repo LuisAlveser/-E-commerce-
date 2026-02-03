@@ -33,7 +33,7 @@ const [erro, setErro] = useState("");
       if(cadastro.status===201){
         const{token, user}=cadastro.data;
           localStorage.setItem('token', token);
-          localStorage.setItem('usuario', JSON.stringify(user));
+          localStorage.setItem('user', JSON.stringify(user));
           setCarregando(false);
           navigate('/Tela_Principal'); 
       }else{
@@ -55,9 +55,10 @@ const [erro, setErro] = useState("");
         if(login.status===200){
             const { user, token } = login.data;
              localStorage.setItem('token', token);
-             localStorage.setItem('usuario', JSON.stringify(user));
+             localStorage.setItem('user', JSON.stringify(user));
               setCarregando(false);
-               navigate('/Tela_Principal');
+              console.log(user);
+               navigate('/Tela_Principal',{state:{id:user.id,role:user.role}});
           }else{ 
             setCarregando(false);
               alert("Erro ao Logar Usuário")
@@ -119,9 +120,10 @@ const handleCadastrar = (e) => {
          <MdOutlinePassword  className='icon'/>
         <input  className='input' type="password" value={senha} onChange={(e)=>setsenha(e.target.value)} />
         </label>
-          <p className='texto'>Selecione seu opção:</p>
+         
 
            {logado?"":(<div className="radio-group">
+             <p className='texto'>Selecione sua opção:</p>
                     <label>
                         <input 
                             type="radio" 
@@ -144,7 +146,7 @@ const handleCadastrar = (e) => {
                       Cliente
                     </label>
                 </div>)}
-                <button className="botao"> { carregando? <FaSpinner className="spinner" />:logado?"Login" :"Cadastro"} </button>
+                <button className="botao2"> { carregando? <FaSpinner className="spinner" />:logado?"Login" :"Cadastro"} </button>
         </form>
       
   { logado?(<p> Não  tem  uma conta? <a className="a"href="" onClick={(e)=>{ e.preventDefault(); setlogado(false);}} >Cadastre-se  aqui!</a></p>)

@@ -2,12 +2,24 @@ import './Tela_Principal.css'
 import { useEffect, useState } from 'react';
 import { FaUserCircle ,FaSpinner} from "react-icons/fa";
 import  axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function Tela_Principal(){
+const navigate =useNavigate();
+
+
+
+
     const[user,setUsuario]=useState(null);
+    const sair=(e)=>{
+        localStorage.removeItem("token"); 
+        navigate("/");
+    }
     useEffect(() => {
   try {
    
     const token = localStorage.getItem("token");
+    
     const base64Url = token.split('.')[1]; 
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       
@@ -63,14 +75,17 @@ function Tela_Principal(){
     }
     mostrarProdutos();
  },[]);
+ const Cadastro_Produto=(e)=>{
+      navigate("/Tela_Cadastro_Produto");
+ }
     return(
        <>
         <div className='cabecalho'> 
           <FaUserCircle className='icontela' />
         <h1>{user?.name || "Usuário"}</h1>
              {user?.role && <div className='tag'>{user.role}</div>}
-          <button className="botaotela"> Sair </button>
-           <button className="botaotela"> Adicionar Produtos </button>
+          <button className="botaotela" style={{ cursor: 'pointer' }}  onClick={sair} > Sair </button>
+           <button className="botaotela" style={{ cursor: 'pointer' }}  onClick={Cadastro_Produto}> Adicionar Produtos </button>
         <div className='divisor'>{   <ul>
       {categorias.map((categoria) => (
         <li onClick={()=>listarProdutosporCat(categoria.id)}   style={{ cursor: 'pointer' }}  key={categoria.id}>{categoria.name}</li>
@@ -84,10 +99,11 @@ function Tela_Principal(){
       <li 
         className='conteudo_produtos' 
         onClick={() => listarProdutosporCat(produto.id)} 
-        style={{ cursor: 'pointer' }} 
+       
         key={produto.id}
       >
         <span>{produto.name}</span>
+         <span><img style={{ width: '100px', height: '100px', objectFit: 'cover', }} src={`http://localhost:3001/uploads/${produto.image_url}`} ></img></span>
         <span>{"R$: " + produto.price}</span>
       </li>
     ))}

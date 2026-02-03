@@ -1,15 +1,19 @@
 const { where } = require("sequelize");
-const{Products,Category}=require("../models");
+const{Products,Category,User}=require("../models");
 
 async function adicionar(req,res) {
     try {
+
+      const imagem_nome = req.file ? req.file.filename : null;
+    
         const produtos={
             name:req.body.name,
             id_category:req.body.id_category,
             description: req.body.description,
            price: req.body.price,
-           image_url: req.body.image_url,
-           stock_quantity:req.body.stock_quantity
+           image_url: imagem_nome,
+           stock_quantity:req.body.stock_quantity,
+           id_user:req.body.id_user
         }
         const newprodutos= await Products.create(produtos);
         if(newprodutos){
@@ -25,11 +29,7 @@ async function mostrarProdutos(req,res) {
     try {
         
          const produtos=await Products.findAll({
-  include: [{
-    model: Category,
-  
-  }]
-});
+  include: [{model: Category },{model:User}]});
          if(produtos){
             return res.status(200).json(produtos);
          }
@@ -40,19 +40,7 @@ async function mostrarProdutos(req,res) {
   
     
 }
-  async function mostrarProdutosporId(req,res) {
-        const id= req.params.id;
-        try {
-            const produto= await Products.findOne({where:{id:id}, include: [{ model: Category}]});
 
-            if(produto){
-               return res.status(200).json(produto);
-            }
-            return res.status(404).json({message:"Produto não encontrado "});
-        } catch (error) {
-              return  res.status(500).json({message:"Erro em mostrar produtos"}); 
-        }        
-    }
     async function atualizar(req,res) {
         const id =req.params.id;
         try {

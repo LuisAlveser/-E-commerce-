@@ -68,10 +68,26 @@ async function cateroriaporId(req,res) {
     }
     
 }
+async function buscarCategoria_Por_Nome(req,res) {
+        const name = req.params.name; 
+    
+    console.log("Nome que chegou no sistema:", name)
+    try {
+     const categoria = await Category.findAll({where:{name:name}});
+       if(categoria.length>0){
+        return res.status(200).json(categoria);
+       } 
+       return res.status(404).json({message:"Nome categoria não encontrado"})
+        
+    } catch (error) {
+        return  res.status(500).json({message:"Erro em buscar  categoria"}); 
+    }
+}
 module.exports={
   adicionar:adicionar,
   atualizar:atualizar,
   excluir:excluir,
   todasCategorias:todasCategorias,
   cateroriaporId:cateroriaporId,
+  buscarCategoria_Por_Nome:buscarCategoria_Por_Nome,
 }

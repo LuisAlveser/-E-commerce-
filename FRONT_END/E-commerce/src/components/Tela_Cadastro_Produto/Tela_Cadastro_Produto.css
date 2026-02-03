@@ -1,0 +1,26 @@
+.label{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  
+ 
+}
+.form a {
+  width: 70px;
+ 
+}
+.botao1{
+    width: 100px;
+
+    justify-content: center;
+  border-radius: 5px;
+    background-color: oklch(12.9% 0.042 264.695);
+ border-color: transparent;
+}

@@ -72,7 +72,7 @@
 }
 
 .lista-produtos{
-  
+ 
     display: flex;
     flex-direction: row;
      list-style: none; 
@@ -83,12 +83,13 @@
   
 }
 .conteudo_produtos {
+    
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
     padding: 10px;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     background-color: oklch(62.3% 0.214 259.815);
     justify-items: center;
     border-radius: 20px;
