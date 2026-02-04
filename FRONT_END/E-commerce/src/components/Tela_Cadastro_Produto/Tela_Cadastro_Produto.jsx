@@ -1,7 +1,12 @@
 import './Tela_Cadastro_Produto.css'
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
  function Tela_Cadastro_Produto(){
+    const location=useLocation();
+    const dados=location.state||{};
+    const navegate=useNavigate();
     const[nome_produto,setNomeProduto]=useState("");
     const[descricao_produto,setdescricaoProduto]=useState("");
     const[imagem_produto,setimagemProduto]=useState(null);
@@ -29,7 +34,7 @@ import axios from "axios";
         e.preventDefault();
         const categoriaencontrada = await buscarcategoriapornome(categoria_produto);
         
-       
+      
        
 
        try {
@@ -65,9 +70,19 @@ import axios from "axios";
             
 
     }
+    const voltarParaTela_Principal=(e)=>{
+        e.preventDefault();
+        navegate("/Tela_Principal");
+    }
     return (
-        <>
-         < div className='fundo'>
+        <div  style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className='cabecalho2'> 
+                
+                <h1>{dados.user.name || "Usuário"}</h1>
+                     {dados.user.role && <div className='tag'>{dados.user.role}</div>}
+                  <button className="botaotela" style={{ cursor: 'pointer' }} onClick={voltarParaTela_Principal}  > Voltar </button>
+                </div>
+         < div className='fundo2' >
               <h1> Cadastrar Produto </h1>
                <form className='form' onSubmit={cadastrar_produto}>
                 
@@ -104,13 +119,13 @@ import axios from "axios";
                   
         
                   
-                        <button className="botao1">Adicionar Produto </button>
+                        <button className="botao3">Adicionar Produto </button>
                 </form>
               
                  
                   
               </div>
-        </>
+        </div>
     );
 }
 export default Tela_Cadastro_Produto;

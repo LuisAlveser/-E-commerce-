@@ -16,7 +16,7 @@ const storage= multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-
+router.get("/buscar_por_categoria/:id",ProductController.buscarProduto_Por_categoria);
 router.post("/",upload.single('image_url'),ProductController.adicionar);
 router.get("/",ProductController.mostrarProdutos);
 router.get("/:id",ProductController.mostrarProdutosporId);
@@ -24,4 +24,5 @@ router.patch("/:id",ProductController.atualizar);
 router.patch("/adicionarStok/:id",ProductController.adicionarStok);
 router.patch("/diminuirStok/:id",ProductController.diminuirStok);
 router.delete("/:id",ProductController.deletar);
+
 module.exports=router;

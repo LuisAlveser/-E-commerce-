@@ -1,6 +1,6 @@
 const { where } = require("sequelize");
 const{Products,Category,User}=require("../models");
-
+const fs = require('fs/promises');
 async function adicionar(req,res) {
     try {
 
@@ -118,7 +118,16 @@ async function mostrarProdutos(req,res) {
     }
     async function deletar(req,res) {
         const id=req.params.id;
+        
+
+
         try {
+            const imagem= await Products.findByPk(id); 
+            if(!imagem){
+                return res.status(404).json({message:"Produto não encontrado"});
+            }
+            const nomeArquivo = imagem.image_url;
+            await fs.unlink(`C:/Users/Luis/Desktop/E_commerce/BACK_END/uploads/${nomeArquivo}`)
             const produto=await Products.destroy({where:{id:id}});
           if(produto){
               return  res.status(200).json({message:"Produto excluido com sucesso"});
@@ -129,6 +138,19 @@ async function mostrarProdutos(req,res) {
         }
         
     }
+async function buscarProduto_Por_categoria(req,res) {
+    const id =req.params.id;
+    try {
+        const product= await Products.findAll({where:{id_category:id},include: [{ model: Category}]});
+        if(product){
+          return  res.status(200).json(product);
+        }else{
+             return res.status(404).json({message:"Não existem produtos nesse categoria"});
+        }
+    } catch (error) {
+         return  res.status(500).json({message:"Erro buscar produto"});
+    }    
+}
 module.exports={
     adicionar:adicionar,
     mostrarProdutos:mostrarProdutos,
@@ -137,4 +159,5 @@ module.exports={
     adicionarStok:adicionarStok,
     diminuirStok:diminuirStok,
     deletar:deletar,
+    buscarProduto_Por_categoria:buscarProduto_Por_categoria,
 }

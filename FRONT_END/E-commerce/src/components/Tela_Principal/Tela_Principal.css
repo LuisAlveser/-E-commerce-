@@ -23,6 +23,7 @@
     background-color: oklch(12.9% 0.042 264.695);
  border-color: transparent;
  padding-right: 5px;
+ margin-right: 10px;
 }
 .icontela{
     width: 50px;
@@ -72,7 +73,9 @@
 }
 
 .lista-produtos{
- 
+    width: 100%;
+    height: 100%;
+
     display: flex;
     flex-direction: row;
      list-style: none; 
@@ -88,8 +91,8 @@
     flex-direction: column; 
     align-items: flex-start; 
     padding: 10px;
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     background-color: oklch(62.3% 0.214 259.815);
     justify-items: center;
     border-radius: 20px;
@@ -97,5 +100,33 @@
     gap: 30px;
     align-items: center;
     
+    
+}
+.opcoes{
+     display: flex;
+    flex-direction: row;
+   align-items: center;
+    font-size: 14px; 
+    cursor: pointer;
+    justify-content: center;
+    padding-top: 5px;
+  
+}
+.icon_pen{
+  width: 19px;
+  height: 19px;
+  color:  oklch(12.9% 0.042 264.695);
+}
+.icon_delete{
+      width: 24px;
+  height: 24px;
+  color:red;
+}
+.div{
+    height: 5px;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+  
     
 }
