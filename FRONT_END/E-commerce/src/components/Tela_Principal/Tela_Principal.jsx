@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { TfiPackage } from "react-icons/tfi";
 import { RiShoppingBag2Line,RiSubtractFill } from "react-icons/ri";
 
+
 function Tela_Principal(){
 const navigate =useNavigate();
 
@@ -129,6 +130,7 @@ const [categorias,setCategorias]=useState([]);
         console.log("Aguardando o ID do usuário...");
     }
 }, [user]);
+
 const buscar_produtos_por_user=async ()=>{
  
      try {
@@ -171,7 +173,43 @@ const retiraritems=(id)=>{
           <FaUserCircle className='icontela' />
         <h1>{user?.name || "Usuário"}</h1>
              {user?.role && <div className='tag'>{user.role}</div>}
-             {user?.role==="admin"?<span className='span'><TfiPackage  className='icons_tela'/>{buscar_produtos_por_usuario.length} </span>:<span className='span'><RiShoppingBag2Line  onClick={toggleCarrinho} className='icons_tela'/>{carrinho.length}{carrinhoAberto && (
+             {user?.role==="admin"?<span className='span'><TfiPackage  className='icons_tela' onClick={toggleCarrinho} />{buscar_produtos_por_usuario.length}
+             {buscar_produtos_por_usuario&&(
+ <div className="modal-carrinho" style={{
+    position: 'absolute',
+    right: '20px',
+    top: '80px',
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    padding: '20px',
+    zIndex: 1000,
+    borderRadius: '10px',
+    boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
+    width: '300px',
+    
+    
+  }}>
+    <h3 className='carrinho_lista'>Produtos Cadastrados</h3>
+    {buscar_produtos_por_usuario.length === 0 ? (
+      <p style={{color:"black"}}>Você não cadastrou nenhum produto</p>
+    ) : (
+      <ul style={{ listStyle: 'none', padding: 0 }}>
+
+        {buscar_produtos_por_usuario.map((item, index) => (
+          
+          <li key={index} style={{ marginBottom: '10px', borderBottom: '1px solid #eee' }}>
+           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <MdDelete  style={{ cursor: 'pointer' }}  onClick={()=>{deletarProduto(item)}} className='subtracao' /></a>
+          </li>
+        ))}
+      </ul>
+    )}
+    <div className='botoes'><button style={{ cursor: 'pointer' }} className="botaocompra"onClick={toggleCarrinho}>Fechar</button>
+    
+    </div>
+
+  </div>)}
+              </span>:<span className='span'>
+              <RiShoppingBag2Line  onClick={toggleCarrinho} className='icons_tela'/>{carrinho.length}{carrinhoAberto && (
   <div className="modal-carrinho" style={{
     position: 'absolute',
     right: '20px',
@@ -195,7 +233,7 @@ const retiraritems=(id)=>{
         {carrinho.map((item, index) => (
           
           <li key={index} style={{ marginBottom: '10px', borderBottom: '1px solid #eee' }}>
-           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <RiSubtractFill onClick={()=>{retiraritems(item.id)}} className='subtracao' /></a>
+           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <RiSubtractFill style={{ cursor: 'pointer' }} onClick={()=>{retiraritems(item.id)}} className='subtracao' /></a>
           </li>
         ))}
       </ul>
@@ -220,7 +258,7 @@ const retiraritems=(id)=>{
 <div className='conteudo-abaixo' style={{ marginTop: '170px', padding: '20px' }}>
  <ul className="lista-produtos"> 
   
-  {(buscar_produtos_por_usuario.legth>0?buscar_produtos_por_usuario:Produtos_por_categoria.length > 0 ? Produtos_por_categoria : mostrarTodosProdutos).map((produto) => (
+  {(Produtos_por_categoria.length > 0 ? Produtos_por_categoria : mostrarTodosProdutos).map((produto) => (
     <li className='conteudo_produtos' key={produto.id}>
       <div className="container-nome-opcoes" style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
         <span className='nomeproduto'>{produto.name}
