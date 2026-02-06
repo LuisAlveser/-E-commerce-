@@ -16,6 +16,23 @@
     
  
 }
+.botaocarrinho{
+     width: 100px;
+    height: 50px;
+     border-radius: 5px;
+    background-color: oklch(12.9% 0.042 264.695);
+ border-color: transparent;
+ 
+}
+.span{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.icons_tela{
+    width: 20px;
+    height: 20px;
+}
 .botaotela{
     width: 100px;
     height: 50px;
@@ -92,12 +109,12 @@
     align-items: flex-start; 
     padding: 10px;
     width: 300px;
-    height: 300px;
+    height: 350px;
     background-color: oklch(62.3% 0.214 259.815);
     justify-items: center;
     border-radius: 20px;
     list-style: none;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
     
     
@@ -129,4 +146,25 @@
     border-radius: 20px;
   
     
+}
+.carrinho_lista{
+color: black;
+}
+
+.botaocompra{
+  width: 80px;
+  height: 20px;
+  border-radius: 5px;
+    background-color: oklch(12.9% 0.042 264.695);
+ border-color: transparent;
+ margin-bottom: 30px;
+}
+.subtracao{
+    color: red;
+}
+.botoes{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    gap: 150px;
 }

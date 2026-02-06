@@ -151,6 +151,22 @@ async function buscarProduto_Por_categoria(req,res) {
          return  res.status(500).json({message:"Erro buscar produto"});
     }    
 }
+async function buscarProdutos_Por_usuario(req,res) {
+    const id =req.params.id;
+    try {
+        const product= await Products.findAll({where:{id_user:id}})
+        if(product){
+            return res.status(200).json(product);
+        }else{
+            return res.status(404).json({message:"Não existem produtos relacionados a esse usuário"})
+        }
+
+        
+    } catch (error) {
+         return  res.status(500).json({message:"Erro buscar produto por usuário"});
+    }
+    
+}
 module.exports={
     adicionar:adicionar,
     mostrarProdutos:mostrarProdutos,
@@ -160,4 +176,5 @@ module.exports={
     diminuirStok:diminuirStok,
     deletar:deletar,
     buscarProduto_Por_categoria:buscarProduto_Por_categoria,
+    buscarProdutos_Por_usuario:buscarProdutos_Por_usuario,
 }

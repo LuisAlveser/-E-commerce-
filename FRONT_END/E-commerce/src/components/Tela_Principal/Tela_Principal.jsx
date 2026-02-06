@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
-
+import { TfiPackage } from "react-icons/tfi";
+import { RiShoppingBag2Line,RiSubtractFill } from "react-icons/ri";
 
 function Tela_Principal(){
 const navigate =useNavigate();
@@ -49,6 +50,7 @@ const navigate =useNavigate();
     try {
       const produtos_por_categoria=await axios.get(`http://localhost:3001/product/buscar_por_categoria/${id}`)
       if(produtos_por_categoria.status===200){
+     
         setProdutos_por_categoria(produtos_por_categoria.data);
       }else{
             alert("Erro em buscar produtos por categoria:");
@@ -108,6 +110,7 @@ const [categorias,setCategorias]=useState([]);
         if(resposta.status===200){
           setProdutos_por_categoria(Produtos_por_categoria=>Produtos_por_categoria.filter(p=>p.id!==produto.id));
           setMostrarProdutos(mostrarTodosProdutos=>mostrarTodosProdutos.filter(p=>p.id!==produto.id));
+          setbuscar_produtos_por_usuario(buscar_produtos_por_user=>buscar_produtos_por_user.filter(p=>p.id!==produto.id));
           alert("Produto excluido com sucesso")
         }else{
           alert("Erro produto não encontrado")
@@ -117,14 +120,96 @@ const [categorias,setCategorias]=useState([]);
          console.warn("Erro em excluir produto",error);
       }
  }
+  const [buscar_produtos_por_usuario,setbuscar_produtos_por_usuario]=useState([]);
+ useEffect(() => {
+
+    if (user && user.id) {
+        buscar_produtos_por_user();
+    } else {
+        console.log("Aguardando o ID do usuário...");
+    }
+}, [user]);
+const buscar_produtos_por_user=async ()=>{
+ 
+     try {
+      const produtos=await axios.get(`http://localhost:3001/product/buscar_produtos_por_usuario/${user.id}`)
+     console.log(produtos.data)
+      if(produtos.status===200){
+         setbuscar_produtos_por_usuario(produtos.data);
+        
+        
+      
+
+      }else{
+        alert("Erro em buscar produtos por usuário")
+      }
+      
+     } catch (error) {
+       console.warn("Erro em buscar  produtos por usuário",error);
+     }
+ }
+
+const [carrinho,setcarrinho]=useState([]);
+const adicionaritens=(item)=>{
+  setcarrinho((carrinho)=>[...carrinho,item]);
+  
+
+}
+const[carrinhoAberto,setCarrinhoAberto]=useState(false);
+const toggleCarrinho = () => {
+  setCarrinhoAberto(!carrinhoAberto);
+};
+const retiraritems=(id)=>{
+ carrinho.pop(p=>p.id===id);
+ setCarrinhoAberto([...carrinho]);
+}
+
+ 
     return(
        <>
         <div className='cabecalho'> 
           <FaUserCircle className='icontela' />
         <h1>{user?.name || "Usuário"}</h1>
              {user?.role && <div className='tag'>{user.role}</div>}
+             {user?.role==="admin"?<span className='span'><TfiPackage  className='icons_tela'/>{buscar_produtos_por_usuario.length} </span>:<span className='span'><RiShoppingBag2Line  onClick={toggleCarrinho} className='icons_tela'/>{carrinho.length}{carrinhoAberto && (
+  <div className="modal-carrinho" style={{
+    position: 'absolute',
+    right: '20px',
+    top: '80px',
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    padding: '20px',
+    zIndex: 1000,
+    borderRadius: '10px',
+    boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
+    width: '300px',
+    
+    
+  }}>
+    <h3 className='carrinho_lista'>Seu Carrinho</h3>
+    {carrinho.length === 0 ? (
+      <p>O carrinho está vazio</p>
+    ) : (
+      <ul style={{ listStyle: 'none', padding: 0 }}>
+
+        {carrinho.map((item, index) => (
+          
+          <li key={index} style={{ marginBottom: '10px', borderBottom: '1px solid #eee' }}>
+           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <RiSubtractFill onClick={()=>{retiraritems(item.id)}} className='subtracao' /></a>
+          </li>
+        ))}
+      </ul>
+    )}
+    <div className='botoes'><button  className="botaocompra"onClick={toggleCarrinho}>Fechar</button>
+    <button  className="botaocompra">Comprar</button>
+    </div>
+
+  </div>
+  
+)}</span>}
           <button className="botaotela" style={{ cursor: 'pointer' }}  onClick={sair} > Sair </button>
        {user?.role==="admin"? <button className="botaotela" style={{ cursor: 'pointer' }}  onClick={Cadastro_Produto}> Adicionar Produtos </button>:""}
+      
         <div className='divisor'>{   <ul>
       {categorias.map((categoria) => (
         <li onClick={()=>mostrarProdutos_Por_Categoria(categoria.id)}   style={{ cursor: 'pointer' }}  key={categoria.id}>{categoria.name}</li>
@@ -135,7 +220,7 @@ const [categorias,setCategorias]=useState([]);
 <div className='conteudo-abaixo' style={{ marginTop: '170px', padding: '20px' }}>
  <ul className="lista-produtos"> 
   
-  {(Produtos_por_categoria.length > 0 ? Produtos_por_categoria : mostrarTodosProdutos).map((produto) => (
+  {(buscar_produtos_por_usuario.legth>0?buscar_produtos_por_usuario:Produtos_por_categoria.length > 0 ? Produtos_por_categoria : mostrarTodosProdutos).map((produto) => (
     <li className='conteudo_produtos' key={produto.id}>
       <div className="container-nome-opcoes" style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
         <span className='nomeproduto'>{produto.name}
@@ -159,6 +244,7 @@ const [categorias,setCategorias]=useState([]);
         />
       </span>
       <span>{"R$ " + produto.price}</span>
+      {user?.role==="admin"?"":<span> <button  style={{ cursor: 'pointer' }}  onClick={()=>{adicionaritens(produto)}} className='botaocarrinho'>Adicionar ao Carrinho</button></span>}
     </li>
   ))}
 </ul>

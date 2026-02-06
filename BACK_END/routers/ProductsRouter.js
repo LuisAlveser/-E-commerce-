@@ -24,5 +24,5 @@ router.patch("/:id",ProductController.atualizar);
 router.patch("/adicionarStok/:id",ProductController.adicionarStok);
 router.patch("/diminuirStok/:id",ProductController.diminuirStok);
 router.delete("/:id",ProductController.deletar);
-
+router.get("/buscar_produtos_por_usuario/:id",ProductController.buscarProdutos_Por_usuario);
 module.exports=router;
