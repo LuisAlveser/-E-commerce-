@@ -20,7 +20,7 @@ router.get("/buscar_por_categoria/:id",ProductController.buscarProduto_Por_categ
 router.post("/",upload.single('image_url'),ProductController.adicionar);
 router.get("/",ProductController.mostrarProdutos);
 router.get("/:id",ProductController.mostrarProdutosporId);
-router.patch("/:id",ProductController.atualizar);
+router.patch("/:id",upload.single('image_url'),ProductController.atualizar);
 router.patch("/adicionarStok/:id",ProductController.adicionarStok);
 router.patch("/diminuirStok/:id",ProductController.diminuirStok);
 router.delete("/:id",ProductController.deletar);

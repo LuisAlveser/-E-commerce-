@@ -1,0 +1,37 @@
+.fundo_das_compras{
+    width:500px;
+    height: auto;
+    background-color:  oklch(62.3% 0.214 259.815);
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  
+    margin-top: 150px;
+   
+}
+.lista{
+list-style: none;
+display: flex;
+flex-direction: column;
+
+}
+.nome{
+    padding-left: 10px;
+}
+.botao3{
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+    background-color: oklch(12.9% 0.042 264.695);
+ border-color: transparent;
+margin-top: 20px;
+align-self: flex-end; 
+  margin-right: 20px;
+  margin-top: 15px;
+
+
+
+}
+
+

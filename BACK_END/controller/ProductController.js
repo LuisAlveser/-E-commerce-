@@ -1,6 +1,7 @@
 const { where } = require("sequelize");
 const{Products,Category,User}=require("../models");
-const fs = require('fs/promises');
+const fs = require('fs');
+const path = require('path');
 async function adicionar(req,res) {
     try {
 
@@ -43,18 +44,39 @@ async function mostrarProdutos(req,res) {
 
     async function atualizar(req,res) {
         const id =req.params.id;
+           const novaImagem = req.file ? req.file.filename : null; ;
+
         try {
-          const produto={
-             name:req.body.name,
-            id_category:req.body.id_category,
+            const buscarproduto =await Products.findByPk(id);
+            console.log(buscarproduto)
+            if(!buscarproduto){
+              return res.status(404).json({message:"Imagen não encontrada"})
+            }
+             if (buscarproduto.image_url&&novaImagem) {
+                console.log(buscarproduto.image_url)
+                console.log(buscarproduto.id)
+         const oldImagePath = path.resolve(__dirname, '..', 'uploads', buscarproduto.image_url);
+          console.log("Tentando deletar:", oldImagePath);
+          if (fs.existsSync(oldImagePath)) {
+           
+           fs.unlinkSync(oldImagePath); 
+          
+      }
+    }
+
+         const produto={
+              name:req.body.name,
             description: req.body.description,
            price: req.body.price,
-           image_url: req.body.image_url,
-           stock_quantity:req.body.stock_quantity
+           image_url: novaImagem,
+           stock_quantity:req.body.stock_quantity,
+    
         }
-        const novoproduto= await Products.update(produto,{where:{id:id}});
+        
+        const [novoproduto]= await Products.update(produto,{where:{id:id}});
+        
         if(novoproduto>0){
-          res.status(200).json({message:"Produto atualizado"});
+        return   res.status(200).json({message:"Produto atualizado"});
         }
 
         } catch (error) {

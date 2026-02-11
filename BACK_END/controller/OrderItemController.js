@@ -4,10 +4,10 @@ const {Order_Item,Order,Products,sequelize}=require("../models");
 async function adicionar(req,res) {
     try {
            await sequelize.transaction(async (t) => {
-      const  order=await Order.findOne({where:{id:req.body.id_order}});
+     
       const product =await Products.findOne({where:{id:req.body.id_product}});
      
-      if(!order||!product){
+      if(!product){
         return res.status(404).json({message:"Pedido ou Produto inválidos"});
       }
       if( req.body.quantity>product.stock_quantity){
@@ -15,10 +15,10 @@ async function adicionar(req,res) {
       }
       
         const orderitem={
-      id_order:order.id,
+      
      id_product: product.id,
      quantity: req.body.quantity,
-     unit_price:product.price
+     unit_price:req.body.unit_price,
         }  
       
         const  orderItem=await Order_Item.create(orderitem);
@@ -38,7 +38,7 @@ async function adicionar(req,res) {
 async function mostrarPedidosporId(req,res) {
     const id=req.params.id;
     try {
-        const order_item =await Order_Item.findOne({where:{id:id},include:[{model:Order},{model:Products}]});
+        const order_item =await Order_Item.findOne({where:{id:id},include:[{model:Products}]});
         if(order_item){
          return    res.status(200).json(order_item);
         }

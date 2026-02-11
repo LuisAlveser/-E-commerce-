@@ -149,6 +149,10 @@
 }
 .carrinho_lista{
 color: black;
+display: flex;
+flex-direction: row;
+gap: 5px;
+
 }
 
 .botaocompra{
@@ -167,4 +171,8 @@ color: black;
     flex-direction: row;
     align-items:center;
     gap: 150px;
+}
+.pen{
+    width: 15px;
+    height: 15px;
 }

@@ -6,13 +6,16 @@ import { useNavigate } from 'react-router-dom';
  function Tela_Cadastro_Produto(){
     const location=useLocation();
     const dados=location.state||{};
+    const { produto, user } = location.state || {}; 
+   
+    
     const navegate=useNavigate();
-    const[nome_produto,setNomeProduto]=useState("");
-    const[descricao_produto,setdescricaoProduto]=useState("");
-    const[imagem_produto,setimagemProduto]=useState(null);
-    const[preco_produto,setPreco_Produto]=useState("");
+    const[nome_produto,setNomeProduto]=useState(produto[0]?produto[0].name:"");
+    const[descricao_produto,setdescricaoProduto]=useState(produto[0]?produto[0].description:"");
+    const[imagem_produto,setimagemProduto]=useState(produto[0]?produto[0].image_url:null);
+    const[preco_produto,setPreco_Produto]=useState(produto[0]?produto[0].price:"");
     const[categoria_produto,setCategoriaProduto]=useState("");
-    const[quantidade,setQuantidade]=useState("");
+    const[quantidade,setQuantidade]=useState(produto[0]?produto[0].stock_quantity:"");
 
     const buscarcategoriapornome= async(nome_da_categoria)=>{
         try {
@@ -64,27 +67,58 @@ import { useNavigate } from 'react-router-dom';
      }
 
        } catch (error) {
-        alert("Erro em cadastrar produto")
+        alert("Erro em cadastrar produto",error)
        }
        
             
 
     }
+    
     const voltarParaTela_Principal=(e)=>{
         e.preventDefault();
         navegate("/Tela_Principal");
+    }
+    const atualizarProduto=async(e)=>{
+          e.preventDefault();
+        try {
+            const id =produto[0].id;
+            const token = localStorage.getItem("token"); 
+             const formData = new FormData();
+        formData.append("name", nome_produto);
+        formData.append("description", descricao_produto);
+        formData.append("price", preco_produto);
+        formData.append("stock_quantity", quantidade);
+       if (imagem_produto instanceof File) {
+            formData.append("image_url", imagem_produto);
+        }
+         const resposta =await axios.patch(`http://localhost:3001/product/${id}`,formData,{
+            headers:{
+                "Content-Type": "multipart/form-data",
+                 "Authorization": `Bearer ${token}`
+            }
+         });
+         if(resposta.status===200){
+            alert("Produto atualizado com sucesso")
+            navegate("/Tela_Principal")
+         }else{
+            alert("Erro em atualizar produto ")
+         }
+
+        } catch (error) {
+             alert("Erro em atualizar produto",error)
+        }
     }
     return (
         <div  style={{ display: 'flex', flexDirection: 'column' }}>
             <div className='cabecalho2'> 
                 
-                <h1>{dados.user.name || "Usuário"}</h1>
-                     {dados.user.role && <div className='tag'>{dados.user.role}</div>}
+                <h1>{(dados.user.name ||user[0].name)|| "Usuário"}</h1>
+                     {(dados.user.role || user[0].role)&& <div className='tag'>{dados.user.role||user[0].role}</div>}
                   <button className="botaotela" style={{ cursor: 'pointer' }} onClick={voltarParaTela_Principal}  > Voltar </button>
                 </div>
          < div className='fundo2' >
-              <h1> Cadastrar Produto </h1>
-               <form className='form' onSubmit={cadastrar_produto}>
+              <h1> {user[0]?"Atualizar Produto":"Cadastrar Produto"} </h1>
+               <form className='form' onSubmit={user[0]?atualizarProduto:cadastrar_produto}>
                 
             
                 <label className='label'>
@@ -102,11 +136,12 @@ import { useNavigate } from 'react-router-dom';
                 <input  className='input' type="texto" value={preco_produto} onChange={(e)=>setPreco_Produto(e.target.value)} />
                 
                 </label>
+                {produto[0]?"":
                  <label  className='label'>
                <a>Categoria:</a>
                 <input  className='input' type="text" value={categoria_produto} onChange={(e)=>setCategoriaProduto(e.target.value)} />
                 </label>
-                
+ }
                  <label  className='label'>
                <a>Estoque:</a>
                 <input  className='input' type="number" value={quantidade} onChange={(e)=>setQuantidade(e.target.value)} />
@@ -119,7 +154,7 @@ import { useNavigate } from 'react-router-dom';
                   
         
                   
-                        <button className="botao3">Adicionar Produto </button>
+                        <button className="botao3">{user[0]?"Atualizar Produto":"Adicionar Produto"} </button>
                 </form>
               
                  

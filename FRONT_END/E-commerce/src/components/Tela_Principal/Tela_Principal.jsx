@@ -159,12 +159,17 @@ const adicionaritens=(item)=>{
 }
 const[carrinhoAberto,setCarrinhoAberto]=useState(false);
 const toggleCarrinho = () => {
+  console.log(carrinhoAberto)
   setCarrinhoAberto(!carrinhoAberto);
 };
 const retiraritems=(id)=>{
  carrinho.pop(p=>p.id===id);
  setCarrinhoAberto([...carrinho]);
 }
+const atualizarProduto=(produto)=>{
+  navigate("/Tela_Cadastro_Produto",{state: {produto:[produto],user:[user]}});
+}
+
 
  
     return(
@@ -174,7 +179,8 @@ const retiraritems=(id)=>{
         <h1>{user?.name || "Usuário"}</h1>
              {user?.role && <div className='tag'>{user.role}</div>}
              {user?.role==="admin"?<span className='span'><TfiPackage  className='icons_tela' onClick={toggleCarrinho} />{buscar_produtos_por_usuario.length}
-             {buscar_produtos_por_usuario&&(
+              
+             {carrinhoAberto&&buscar_produtos_por_usuario&&(
  <div className="modal-carrinho" style={{
     position: 'absolute',
     right: '20px',
@@ -198,7 +204,10 @@ const retiraritems=(id)=>{
         {buscar_produtos_por_usuario.map((item, index) => (
           
           <li key={index} style={{ marginBottom: '10px', borderBottom: '1px solid #eee' }}>
-           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <MdDelete  style={{ cursor: 'pointer' }}  onClick={()=>{deletarProduto(item)}} className='subtracao' /></a>
+           <a className='carrinho_lista'><strong>{item.name}</strong> - R$ {item.price} <MdDelete  style={{ cursor: 'pointer' }}  onClick={()=>{deletarProduto(item)}} className='subtracao' />
+           <FaPen className='pen' style={{ cursor: 'pointer' }} onClick={()=>{atualizarProduto(item)}} /> 
+
+           </a>
           </li>
         ))}
       </ul>
@@ -239,7 +248,7 @@ const retiraritems=(id)=>{
       </ul>
     )}
     <div className='botoes'><button  className="botaocompra"onClick={toggleCarrinho}>Fechar</button>
-    <button  className="botaocompra">Comprar</button>
+    <button  className="botaocompra" onClick={()=>{ navigate("/Tela_de_Compra",{state: {listaProdutos:carrinho,user:user}});}}>Comprar</button>
     </div>
 
   </div>
