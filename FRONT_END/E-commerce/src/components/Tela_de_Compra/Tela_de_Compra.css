@@ -35,3 +35,9 @@ align-self: flex-end;
 }
 
 
+.quantidade{
+    width: 30px;
+    background-color: oklch(12.9% 0.042 264.695);
+    border-radius: 5px;
+   margin-left: 5px;
+}

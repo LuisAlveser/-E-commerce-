@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
         Order_Item.belongsTo(models.Products,{foreignKey:"id_product"});
-
-      Order_Item.belongsTo(models.Order,{foreignKey:"id_order"});
+        Order_Item.belongsTo(models.Order,{foreignKey:"id_order"});
+      
      
     }
   }
   Order_Item.init({
-    
+    id_order: DataTypes.INTEGER,
     id_product: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     unit_price: DataTypes.DOUBLE

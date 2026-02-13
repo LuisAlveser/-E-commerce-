@@ -11,11 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
     Order.belongsTo(models.User,{foreignKey:"id_user"});
-     Order.hasMany(models.Order_Item,{foreignKey:"id_order"});
+  Order.hasMany(models.Order_Item,{foreignKey:"id_order"});
     }
     
   }
   Order.init({
+   
     id_user: DataTypes.INTEGER,
     total_price: DataTypes.DOUBLE,
     status: DataTypes.STRING

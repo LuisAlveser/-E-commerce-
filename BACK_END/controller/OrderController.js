@@ -2,6 +2,7 @@ const { where } = require("sequelize");
 const {Order,User}=require("../models");
 
 async function  adicionar (req,res) {
+  try {
     const order={
         id_user:req.body.id_user,
         total_price: req.body.total_price,
@@ -9,10 +10,10 @@ async function  adicionar (req,res) {
     }
      const orderuser=await Order.create(order);
      if(orderuser){
-        return res.status(201).json({messege:"Pedido criado com sucesso "});
+        return res.status(201).json({messege:"Pedido criado com sucesso ",data: orderuser});
      }
     
-    try {
+    
         
     } catch (error) {
           return res.status(500).json({messege:" Erro em criar pedido "});  
@@ -21,9 +22,8 @@ async function  adicionar (req,res) {
 }
 async function mostrarPedidos(req,res) {
     try {
-        const order= await Order.findAll({include:[{model:User,  attributes: { 
-      exclude: ['password'] 
-    }}]});
+        const order= await Order.findAll({include:[{model:User}
+,]});
         if(order){
            return res.status(200).json(order);
         }
