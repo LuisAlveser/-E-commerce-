@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  backend:
+    build: ./BACK_END
+    ports:
+      - "3001:3001"
+  frontend:
+    build: ./FRONT_END/E-COMMERCE
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

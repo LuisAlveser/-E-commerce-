@@ -1,5 +1,5 @@
 .fundo_das_compras{
-    width:500px;
+    width:100%;
     height: auto;
     background-color:  oklch(62.3% 0.214 259.815);
     border-radius: 20px;
@@ -40,4 +40,9 @@ align-self: flex-end;
     background-color: oklch(12.9% 0.042 264.695);
     border-radius: 5px;
    margin-left: 5px;
+   margin-right: 10px;
+}
+.titulo{
+    display: flex;
+    justify-content:center ;
 }

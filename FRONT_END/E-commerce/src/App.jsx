@@ -5,6 +5,7 @@ import { MdEmail } from "react-icons/md";
 import { MdOutlinePassword } from "react-icons/md";
 import axios from "axios";
 import { useNavigate,useLocation } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
 
 
 function App() {
@@ -19,8 +20,9 @@ const [erro, setErro] = useState("");
  const [carregando,setCarregando]=useState(false);
  const   Cadastro =async (e)=>{
    e.preventDefault();
+   setCarregando(true)
    if(!logado){
-    //Cadastro
+  
     setCarregando(true);
     const user ={
       name:nome,
@@ -57,7 +59,7 @@ const [erro, setErro] = useState("");
              localStorage.setItem('token', token);
              localStorage.setItem('user', JSON.stringify(user));
               setCarregando(false);
-              console.log(user);
+             
                navigate('/Tela_Principal',{state:{id:user.id,role:user.role}});
           }else{ 
             setCarregando(false);
@@ -146,7 +148,7 @@ const handleCadastrar = (e) => {
                       Cliente
                     </label>
                 </div>)}
-                <button className="botao2"> { carregando? <FaSpinner className="spinner" />:logado?"Login" :"Cadastro"} </button>
+                <button className="botao2"> { carregando? <ClipLoader color="#ffffff"  size={20} />:logado?"Login" :"Cadastro"} </button>
         </form>
       
   { logado?(<p> Não  tem  uma conta? <a className="a"href="" onClick={(e)=>{ e.preventDefault(); setlogado(false);}} >Cadastre-se  aqui!</a></p>)

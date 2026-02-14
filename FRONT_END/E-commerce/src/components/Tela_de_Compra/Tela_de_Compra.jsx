@@ -17,7 +17,7 @@ function Tela_de_Compra(){
      const navigate = useNavigate();
    
 const [carrinho,setcarrinho]=useState(produtos.listaProdutos?produtos.listaProdutos:[]);
-const [precoFinal,setprecoFinal]=useState("")
+
 
 
 
@@ -74,7 +74,7 @@ console.log(items_pedido)
    
     const resposta_id=parseInt(id_pedido);
     
-    
+
       const pedido={
         id_order:resposta_id,
         id_product: item.id,
@@ -188,7 +188,7 @@ const voltar=()=>{
            </div>
            <div className='fundo_das_compras'>
             <div className='produtos'>
-                <h1>Itens do Carrinho</h1>
+                <h1 className='titulo'>Itens do Carrinho</h1>
                 <ul className='lista'>
                 {(carrinho).map((item,index)=>(
                 
