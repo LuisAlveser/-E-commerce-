@@ -4,9 +4,7 @@ Bem-vindo ao FashionStore, uma plataforma de e-commerce completa desenvolvida pa
 🚀 Tecnologias Utilizadas
 O projeto utiliza a stack PERN (PostgreSQL, Express, React, Node), garantindo performance e escalabilidade.
 
-Frontend: React.js (com Hooks e Context API/Redux)
-
-
+Frontend: React.js 
 
 Backend: Node.js com Express
 
@@ -16,6 +14,8 @@ ORM: Sequelize (para modelagem e consultas)
 
 Autenticação: JWT (JSON Web Tokens)
 
+Conteinerização: Docker
+
 👥 Níveis de Usuário
 O sistema é dividido em dois perfis principais, com permissões distintas:
 
@@ -24,7 +24,7 @@ Catálogo: Visualização de todos os produtos disponíveis.
 
 Carrinho: Adição, remoção e atualização de quantidade de itens.
 
-Checkout: Simulação de compra e histórico de pedidos.
+
 
 Perfil: Gestão de dados cadastrais e endereços.
 
