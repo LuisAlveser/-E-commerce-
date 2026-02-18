@@ -108,7 +108,7 @@
     flex-direction: column; 
     align-items: flex-start; 
     padding: 10px;
-    width: 300px;
+    width: 250px;
     height: 350px;
     background-color: oklch(62.3% 0.214 259.815);
     justify-items: center;

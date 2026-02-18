@@ -62,14 +62,12 @@ const comprar=async ()=>{
         total_price:total,
         status: 'pendente'
       };
-console.log(items_pedido)
+
    const resposta=  await axios.post("http://localhost:3001/order", items_pedido);
   const   id_pedido=resposta.data.data.id;
 
     
     for (const item of carrinho) {
-      
-       
 
    
     const resposta_id=parseInt(id_pedido);

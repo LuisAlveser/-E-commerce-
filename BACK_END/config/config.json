@@ -1,9 +1,10 @@
 {
    "development": {
-       "username": "postgres",
+    "username": "postgres",
     "password": "alegrete",
     "database": "Loja",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "host": "host.docker.internal"
   },
   "test": {
     "username": "root",

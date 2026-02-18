@@ -285,7 +285,7 @@ const atualizarProduto=(produto)=>{
 
       <span>
         <img 
-          style={{ width: '200px', height: '150px', objectFit: 'cover',borderRadius:"20px" }} 
+          style={{ width: '230px', height: '200px', objectFit: 'cover',borderRadius:"20px" }} 
           src={`http://localhost:3001/uploads/${produto.image_url}`} 
           alt={produto.name}
         />

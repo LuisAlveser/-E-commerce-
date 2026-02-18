@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
  function Tela_Cadastro_Produto(){
     const location=useLocation();
     const dados=location.state||{};
@@ -10,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
    
     
     const navegate=useNavigate();
-    const[nome_produto,setNomeProduto]=useState(produto[0]?produto[0].name:"");
-    const[descricao_produto,setdescricaoProduto]=useState(produto[0]?produto[0].description:"");
-    const[imagem_produto,setimagemProduto]=useState(produto[0]?produto[0].image_url:null);
-    const[preco_produto,setPreco_Produto]=useState(produto[0]?produto[0].price:"");
-    const[categoria_produto,setCategoriaProduto]=useState("");
-    const[quantidade,setQuantidade]=useState(produto[0]?produto[0].stock_quantity:"");
+       const dadosProduto = Array.isArray(produto) ? produto[0] : produto;
+    const [carregando,setCarregando]=useState(false);
+    const [nome_produto, setNomeProduto] = useState(dadosProduto?.name || "");
+    const [descricao_produto, setdescricaoProduto] = useState(dadosProduto?.description || "");
+    const [imagem_produto, setimagemProduto] = useState(dadosProduto?.image_url || null);
+    const [preco_produto, setPreco_Produto] = useState(dadosProduto?.price || "");
+    const [categoria_produto, setCategoriaProduto] = useState("");
+    const [quantidade, setQuantidade] = useState(dadosProduto?.stock_quantity || "");
 
     const buscarcategoriapornome= async(nome_da_categoria)=>{
         try {
@@ -35,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
     }
     const cadastrar_produto=async (e)=>{
         e.preventDefault();
+        setCarregando(true);
         const categoriaencontrada = await buscarcategoriapornome(categoria_produto);
         
       
@@ -63,10 +67,13 @@ import { useNavigate } from 'react-router-dom';
         });
  
      if(resposta.status==201){
+        setCarregando(false)
         alert("Produto cadastrado com sucesso")
+        navegate("/Tela_Principal")
      }
 
        } catch (error) {
+         setCarregando(false)
         alert("Erro em cadastrar produto",error)
        }
        
@@ -81,7 +88,7 @@ import { useNavigate } from 'react-router-dom';
     const atualizarProduto=async(e)=>{
           e.preventDefault();
         try {
-            const id =produto[0].id;
+            const id =dadosProduto.id;
             const token = localStorage.getItem("token"); 
              const formData = new FormData();
         formData.append("name", nome_produto);
@@ -136,7 +143,7 @@ import { useNavigate } from 'react-router-dom';
                 <input  className='input' type="texto" value={preco_produto} onChange={(e)=>setPreco_Produto(e.target.value)} />
                 
                 </label>
-                {produto[0]?"":
+                {dadosProduto?"":
                  <label  className='label'>
                <a>Categoria:</a>
                 <input  className='input' type="text" value={categoria_produto} onChange={(e)=>setCategoriaProduto(e.target.value)} />
@@ -154,7 +161,7 @@ import { useNavigate } from 'react-router-dom';
                   
         
                   
-                        <button className="botao3">{user[0]?"Atualizar Produto":"Adicionar Produto"} </button>
+                        <button className="botao3">{carregando? <ClipLoader color="#ffffff"  size={20} />:user[0]?"Atualizar Produto":"Adicionar Produto"} </button>
                 </form>
               
                  

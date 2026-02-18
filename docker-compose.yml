@@ -4,6 +4,8 @@ services:
     build: ./BACK_END
     ports:
       - "3001:3001"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   frontend:
     build: ./FRONT_END/E-COMMERCE
     ports:

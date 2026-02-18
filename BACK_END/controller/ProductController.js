@@ -138,28 +138,40 @@ async function mostrarProdutos(req,res) {
 
         
     }
-    async function deletar(req,res) {
-        const id=req.params.id;
+   
+
+async function deletar(req, res) {
+    const id = req.params.id;
+
+    try {
+        const produto = await Products.findByPk(id);
         
-
-
-        try {
-            const imagem= await Products.findByPk(id); 
-            if(!imagem){
-                return res.status(404).json({message:"Produto não encontrado"});
-            }
-            const nomeArquivo = imagem.image_url;
-            await fs.unlink(`C:/Users/Luis/Desktop/E_commerce/BACK_END/uploads/${nomeArquivo}`)
-            const produto=await Products.destroy({where:{id:id}});
-          if(produto){
-              return  res.status(200).json({message:"Produto excluido com sucesso"});
-          }  
-          return res.status(404).json({message:"Produto não encontrado"});
-        } catch (error) {
-              return  res.status(500).json({message:"Erro excluir produto"});
+        if (!produto) {
+            return res.status(404).json({ message: "Produto não encontrado" });
         }
+
+    
+        if (produto.image_url) {
+            const caminhoImagem = path.join('C:', 'Users', 'Luis', 'Desktop', 'E_commerce', 'BACK_END', 'uploads', produto.image_url);
+            
+            try {
+                await fs.access(caminhoImagem); 
+                await fs.unlink(caminhoImagem); 
+            } catch (err) {
+                console.warn("Aviso: Imagem não encontrada no disco, prosseguindo com a exclusão do banco.");
+            }
+        }
+
         
+        await Products.destroy({ where: { id: id } });
+
+        return res.status(200).json({ message: "Produto excluído com sucesso" });
+
+    } catch (error) {
+        console.error("Erro detalhado:", error); 
+        return res.status(500).json({ message: "Erro ao excluir produto no servidor" });
     }
+}
 async function buscarProduto_Por_categoria(req,res) {
     const id =req.params.id;
     try {

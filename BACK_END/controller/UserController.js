@@ -50,7 +50,8 @@ async function login(req,res) {
         const token=jwttoken.sign({id:user.id,email:user.email,role:user.role,name:user.name},"olá", { expiresIn: '24h' });
         return res.status(200).json({user:{id:user.id,role:user.role},message:"Login feito com sucesso",token:token});
    } catch (error) {
-      res.status(500).json({message:"Erro ao fazer o login "});
+    
+      res.status(500).json({message:"Erro ao fazer o login " ,debug: error.message });
    } 
 }
 async function atualizar(req,res) {
